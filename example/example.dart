@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
       payMode: 'fix',
       recipient: 'cloud_sciencejet_net',
       userEmail: 'some@mail.ru',
-      note: "Короткая заметка о продукте",
+      note: "Вернет ошибку",
     ),
     OnPayOrder(
       reference: "SALE2",
@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
       amount: 10,
       recipient: 'cloud_sciencejet_net',
       userEmail: 'some@mail.ru',
-      note: "Короткая заметка о продукте",
+      note: "Короткая заметка о продукте. Оплата возможна",
     ),
   ];
 

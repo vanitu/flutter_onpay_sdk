@@ -1,3 +1,11 @@
+## 0.0.3
+
+add failure case to example.dart
+
+## 0.0.2
+
+add example.dart
+
 ## 0.0.1
 
 First package release. 
