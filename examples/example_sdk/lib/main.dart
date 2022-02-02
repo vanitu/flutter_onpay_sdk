@@ -46,7 +46,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<OnPayOrder> orders = [
     OnPayOrder(
-      amount: 100,
+      reference: "SALE1",
+      amount: 0.99,
       payFor: 'Продукт 1',
       payMode: 'fix',
       recipient: 'cloud_sciencejet_net',
@@ -54,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
       note: "Короткая заметка о продукте",
     ),
     OnPayOrder(
+      reference: "SALE2",
       payFor: 'Продукт 2',
       amount: 10,
       recipient: 'cloud_sciencejet_net',
@@ -108,6 +110,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text('PAY RESULT: $msg')));
+      ..showSnackBar(SnackBar(content: Text('${result.order.payFor}: $msg [${result.message}]')));
   }
 }

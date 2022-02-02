@@ -109,14 +109,18 @@ class _OnPayWebViewFormState extends State<OnPayWebViewForm> {
   }
 
   Future<void> _loadStartingPage(WebViewController controller, BuildContext context) async {
-    final String contentBase64 = base64Encode(const Utf8Encoder().convert(loadingPage));
-    await controller.loadUrl('data:text/html;base64,$contentBase64');
-    await _redirectToPayment(controller, context);
+    try {
+      final String contentBase64 = base64Encode(const Utf8Encoder().convert(loadingPage));
+      await controller.loadUrl('data:text/html;base64,$contentBase64');
+      await _redirectToPayment(controller, context);
+    } catch (e) {
+      result = OnPayResultCode.fail;
+      _popWithResult("$e");
+    }
   }
 
   Future<void> _redirectToPayment(WebViewController controller, BuildContext context) async {
     DataModelsPayResponse postData = await onpay.pay(widget.order);
-
     Uri pathUrl = Uri.parse(postData.postUrl);
     Uri outgoingUri = Uri(scheme: pathUrl.scheme, host: pathUrl.host, port: pathUrl.port, path: pathUrl.path, queryParameters: postData.postData);
 
@@ -128,9 +132,9 @@ class _OnPayWebViewFormState extends State<OnPayWebViewForm> {
     await controller.loadRequest(request);
   }
 
-  Future<bool> _popWithResult() {
+  Future<bool> _popWithResult([String? message]) {
     log("_popWithResult fired ${result.toString()}");
-    Navigator.pop(context, OnPayResult(widget.order, result));
+    Navigator.pop(context, OnPayResult(widget.order, result, message: message));
     return Future.value(false);
   }
 }

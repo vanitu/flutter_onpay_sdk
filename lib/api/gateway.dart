@@ -19,7 +19,9 @@ class OnPayPaymentApi {
 
       Map<String, dynamic> json = jsonDecode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
       log("#decoded $json}");
-
+      if (json["order_key"] == null) {
+        throw Exception("${json["errors"]}");
+      }
       DataModelsPayResponse postData = DataModelsPayResponse.fromJson(json);
       return postData;
     } finally {
