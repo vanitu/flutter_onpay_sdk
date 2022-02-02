@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_onpay_sdk/data_models/pay_order.dart';
-import 'package:flutter_onpay_sdk/data_models/pay_result.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:flutter_onpay_sdk/flutter_onpay_sdk.dart';
 
 OnPayOrder _order() {
   return OnPayOrder(
-    payAmount: 10,
+    amount: 10,
     payFor: 'Продукт 2',
     payMode: 'fix',
     recipient: 'cloud_sciencejet_net',
