@@ -1,7 +1,8 @@
 name: flutter_onpay_sdk
 description: Flutter package to integrate OnPay.ru Visa/MasterCard payment form into your mobile application.
-version: 0.0.1
+version: 0.0.2
 homepage: https://onpay.ru
+github: https://github.com/vanitu/flutter_onpay_sdk
 
 environment:
   sdk: ">=2.15.1 <3.0.0"
