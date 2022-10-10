@@ -12,13 +12,14 @@ This package maybe used only with existed merchant account at www.onpay.ru
 
  - Оплата за товары и услуги без выхода из приложения 
  - Поддержка Visa/Mastercard payment within your application
+ - Поддерживаются все методы платежей доступные для магазина
 
 ## Начало
 
 **Для приема карт Visa/Mastercard/МИР**
 
  - Зарегистрируйтесь на [https://onpay.ru]
- - Заполните заявку на прием платажей по картам Visa/Mastercard (платежный метод "CRD")
+ - Заполните заявку на прием платажей по картам Visa/Mastercard (платежный метод "CRD" / "UNR")
  - Запросите техподдержку OnPay активировать API платежной формы API[https://wiki.onpay.ru/doku.php?id=api-for-pay-form]
 
 ## Установка
@@ -45,6 +46,8 @@ dependencies:
 
 Пример использования SDK
 
+**По умолчанию используется метод платежа "CRD"**
+
 ```dart
 import 'package:flutter_onpay_sdk/flutter_onpay_sdk.dart';
 
@@ -58,6 +61,7 @@ import 'package:flutter_onpay_sdk/flutter_onpay_sdk.dart';
         recipient: 'cloud_sciencejet_net', // Код магазина onpay
         userEmail: 'some@mail.ru', // email пользователя
         note: "Короткая заметка о продукте", // ОПЦИОНАЛЬНО. Дополнительное описание покупки
+        interfaceTicker:  "CRD", // Указываем метод платежа доступный для магазина
         )
 
 // 2. Вызов платежной формы внутри виджета. Открывает новый экран с платежной формой. Результатом будет объект OnPayResult содержащий OnPayOrder и статус платежа
@@ -76,4 +80,3 @@ import 'package:flutter_onpay_sdk/flutter_onpay_sdk.dart';
         break;
     }
 ```
-

@@ -71,13 +71,13 @@ class _OnPayWebViewFormState extends State<OnPayWebViewForm> {
                   _loadStartingPage(webViewController, context);
                 },
                 onProgress: (int progress) {
-                  log('WebView is loading (progress : $progress%)');
+                  // log('WebView is loading (progress : $progress%)');
                 },
                 onPageStarted: (String url) {
-                  log('Page started loading: $url');
+                  // log('Page started loading: $url');
                 },
                 onPageFinished: (String url) {
-                  log('Page finished loading: $url');
+                  // log('Page finished loading: $url');
                 },
                 navigationDelegate: _navigationDelegate,
                 gestureNavigationEnabled: true,
@@ -91,20 +91,20 @@ class _OnPayWebViewFormState extends State<OnPayWebViewForm> {
 
   NavigationDecision _navigationDelegate(NavigationRequest request) {
     if (request.url.startsWith(widget.order.urlSuccessEnc)) {
-      log('blocking navigation to $request}');
+      // log('blocking navigation to $request}');
       result = OnPayResultCode.success;
       _popWithResult();
       return NavigationDecision.prevent;
     }
 
     if (request.url.startsWith(widget.order.urlFailEnc)) {
-      log('blocking navigation to $request}');
+      // log('blocking navigation to $request}');
       result = OnPayResultCode.fail;
       _popWithResult();
       return NavigationDecision.prevent;
     }
 
-    log('allowing navigation to $request');
+    // log('allowing navigation to $request');
     return NavigationDecision.navigate;
   }
 
@@ -133,7 +133,7 @@ class _OnPayWebViewFormState extends State<OnPayWebViewForm> {
   }
 
   Future<bool> _popWithResult([String? message]) {
-    log("_popWithResult fired ${result.toString()}");
+    // log("_popWithResult fired ${result.toString()}");
     Navigator.pop(context, OnPayResult(widget.order, result, message: message));
     return Future.value(false);
   }

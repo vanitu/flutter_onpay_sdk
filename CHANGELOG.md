@@ -1,3 +1,7 @@
+## 0.0.4
+
+Added descriptions how to use different payment methods
+
 ## 0.0.3
 
 add failure case to example.dart

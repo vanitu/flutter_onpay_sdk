@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: orders.map((order) => _saleItem(order)).toList(),
@@ -55,13 +55,22 @@ class _MyHomePageState extends State<MyHomePage> {
       note: "Вернет ошибку",
     ),
     OnPayOrder(
-      reference: "SALE2",
-      payFor: 'Продукт 2',
+      reference: "Пример Карты CRD",
+      payFor: 'Пример Карты CRD',
       amount: 10,
       recipient: 'cloud_sciencejet_net',
       userEmail: 'some@mail.ru',
       note: "Короткая заметка о продукте. Оплата возможна",
+      interfaceTicker: 'CRD',
     ),
+    OnPayOrder(
+        reference: "Пример Карты UNR",
+        payFor: 'Пример Карты UNR',
+        amount: 10,
+        recipient: 'cloud_sciencejet_net',
+        userEmail: 'some@mail.ru',
+        note: "Короткая заметка о продукте. Оплата возможна",
+        interfaceTicker: 'UNR'),
   ];
 
   Widget _saleItem(OnPayOrder order) {

@@ -13,7 +13,7 @@ class OnPaySdk {
       );
       return result;
     } catch (e) {
-      log("EXCEPTION openPaymentForm: $e", level: 3);
+      // log("EXCEPTION openPaymentForm: $e", level: 3);
       return OnPayResult(order, OnPayResultCode.fail);
     }
   }
