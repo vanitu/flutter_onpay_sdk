@@ -14,10 +14,33 @@ OnPayOrder _order() {
   );
 }
 
+OnPayOrder _orderWithParams() {
+  return OnPayOrder(
+    amount: 10,
+    payFor: 'Продукт 2',
+    payMode: 'fix',
+    recipient: 'cloud_sciencejet_net',
+    userEmail: 'some@mail.ru',
+    note: "Короткая заметка о продукте",
+    additionalParams: {"some": "1"},
+  );
+}
+
 void main() {
   testWidgets('Able to open WebForm', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     OnPayOrder order = _order();
+
+    await tester.pumpWidget(MyWidget(order: order));
+    expect(find.text('openForm'), findsOneWidget);
+
+    await tester.tap(find.text('openForm'));
+    await tester.pump();
+  });
+
+  testWidgets('Able to open WebForm with addon params', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    OnPayOrder order = _orderWithParams();
 
     await tester.pumpWidget(MyWidget(order: order));
     expect(find.text('openForm'), findsOneWidget);

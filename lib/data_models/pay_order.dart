@@ -9,6 +9,7 @@ class OnPayOrder {
     this.ticker = "RUR",
     this.interfaceTicker = "CRD", // CreditCards Payment gateway
     this.note,
+    this.additionalParams = const {},
   });
   late final String userEmail;
   late final String payFor;
@@ -20,6 +21,8 @@ class OnPayOrder {
 
   late final String? note;
   late final String? reference;
+
+  late final Map<String, String> additionalParams;
 
   final String urlSuccessEnc = "https://onpay.ru/sdk_success";
   final String urlFailEnc = "https://onpay.ru/sdk_fail";
@@ -36,7 +39,7 @@ class OnPayOrder {
     _data['pay_amount'] = amount.toString();
     _data['url_success_enc'] = urlSuccessEnc;
     _data['url_fail_enc'] = urlFailEnc;
-
+    additionalParams.forEach((key, value) => _data["onpay_ap_$key"] = value);
     return _data;
   }
 }
