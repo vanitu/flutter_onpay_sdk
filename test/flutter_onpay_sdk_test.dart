@@ -74,6 +74,6 @@ class MyWidget extends StatelessWidget {
   }
 
   void _openPaymentForm(BuildContext context) async {
-    OnPayResult result = await OnPaySdk.openPaymentForm(context, order);
+    OnPayResult _ = await OnPaySdk.openPaymentForm(context, order);
   }
 }
