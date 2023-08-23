@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_onpay_sdk/data_models/pay_method.dart';
 import 'package:flutter_onpay_sdk/data_models/pay_order.dart';
@@ -93,7 +95,7 @@ class _MyHomePageState extends State<ExampleAppMyHomePage> {
           child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Expanded(child: Icon(Icons.card_giftcard, size: 30), flex: 1),
+          const Expanded(flex: 1, child: Icon(Icons.card_giftcard, size: 30)),
           Expanded(
             flex: 3,
             child: Column(

@@ -5,9 +5,7 @@
 // ignore_for_file: public_member_api_docs
 
 import 'dart:async';
-import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_onpay_sdk/api/gateway.dart';
@@ -36,10 +34,10 @@ class OnPayWebViewForm extends StatefulWidget {
   // final void Function(OnPayOrder order)? onFail;
 
   @override
-  _OnPayWebViewFormState createState() => _OnPayWebViewFormState();
+  OnPayWebViewFormState createState() => OnPayWebViewFormState();
 }
 
-class _OnPayWebViewFormState extends State<OnPayWebViewForm> {
+class OnPayWebViewFormState extends State<OnPayWebViewForm> {
   // final Completer<WebViewController> _controller = Completer<WebViewController>();
 
   late WebViewController _controller;
@@ -119,8 +117,6 @@ class _OnPayWebViewFormState extends State<OnPayWebViewForm> {
 
   Future<void> _loadStartingPage() async {
     try {
-      final String contentBase64 = base64Encode(const Utf8Encoder().convert(loadingPage));
-      final String content = loadingPage;
       await _controller.loadHtmlString(loadingPage);
       // await _controller.loadHtmlString('data:text/html;base64,$contentBase64');
       await _redirectToPayment();
@@ -134,18 +130,8 @@ class _OnPayWebViewFormState extends State<OnPayWebViewForm> {
   Future<void> _redirectToPayment() async {
     DataModelsPayResponse postData = await onpay.pay(widget.order);
     Uri pathUrl = Uri.parse(postData.postUrl);
-    print("URL: ${postData.postUrl}");
     Uri outgoingUri = Uri(scheme: pathUrl.scheme, host: pathUrl.host, port: pathUrl.port, path: pathUrl.path, queryParameters: postData.postData);
-    // Uri outgoingUri = Uri.parse("https://secure.onpay.ru");
-    print("URL: ${outgoingUri}");
-    // log("WebView _redirectToPayment");
     return _controller.loadRequest(outgoingUri, method: LoadRequestMethod.post, headers: <String, String>{'Content-Type': 'text/html'});
-    // final WebViewRequest request = WebViewRequest(
-    //   uri: outgoingUri,
-    //   method: WebViewRequestMethod.post,
-    //   headers: <String, String>{'Content-Type': 'text/html'},
-    // );
-    // await _controller.loadRequest(request);
   }
 
   Future<bool> _popWithResult([String? message]) {
