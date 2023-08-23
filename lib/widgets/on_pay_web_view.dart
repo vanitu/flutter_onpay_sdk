@@ -29,20 +29,14 @@ Please wait...
 </html>
 ''';
 
-class OnPayWebViewForm extends StatefulWidget {
-  const OnPayWebViewForm({Key? key, required this.order}) : super(key: key);
-  final OnPayOrder order;
-  // final void Function(OnPayOrder order)? onSuccess;
-  // final void Function(OnPayOrder order)? onFail;
+abstract class OnPayWebView extends StatefulWidget {
+  const OnPayWebView({Key? key}) : super(key: key);
 
-  @override
-  _OnPayWebViewFormState createState() => _OnPayWebViewFormState();
+  OnPayOrder get order;
 }
 
-class _OnPayWebViewFormState extends State<OnPayWebViewForm> {
-  // final Completer<WebViewController> _controller = Completer<WebViewController>();
-
-  late WebViewController _controller;
+abstract class OnPayWebViewState<T extends OnPayWebView> extends State<OnPayWebView> {
+  late WebViewController controller;
 
   OnPayPaymentApi onpay = OnPayPaymentApi();
   OnPayResultCode result = OnPayResultCode.notCompleted;
@@ -50,14 +44,11 @@ class _OnPayWebViewFormState extends State<OnPayWebViewForm> {
   @override
   void initState() {
     super.initState();
-    _controller = _buildWebViewController();
-    _loadStartingPage();
-    // if (Platform.isAndroid) {
-    //   WebView.platform = SurfaceAndroidWebView();
-    // }
+    controller = buildWebViewController();
+    loadStartingPage();
   }
 
-  WebViewController _buildWebViewController() {
+  WebViewController buildWebViewController() {
     return WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setNavigationDelegate(_navigationDelegate);
@@ -89,7 +80,7 @@ class _OnPayWebViewFormState extends State<OnPayWebViewForm> {
           child: Center(
             child: Builder(builder: (BuildContext context) {
               return WebViewWidget(
-                controller: _controller,
+                controller: controller,
               );
             }),
           ),
@@ -100,30 +91,24 @@ class _OnPayWebViewFormState extends State<OnPayWebViewForm> {
 
   NavigationDecision _onNavigationRequest(NavigationRequest request) {
     if (request.url.startsWith(widget.order.urlSuccessEnc)) {
-      // log('blocking navigation to $request}');
       result = OnPayResultCode.success;
       _popWithResult();
       return NavigationDecision.prevent;
     }
 
     if (request.url.startsWith(widget.order.urlFailEnc)) {
-      // log('blocking navigation to $request}');
       result = OnPayResultCode.fail;
       _popWithResult();
       return NavigationDecision.prevent;
     }
 
-    // log('allowing navigation to $request');
     return NavigationDecision.navigate;
   }
 
-  Future<void> _loadStartingPage() async {
+  Future<void> loadStartingPage() async {
     try {
-      final String contentBase64 = base64Encode(const Utf8Encoder().convert(loadingPage));
-      final String content = loadingPage;
-      await _controller.loadHtmlString(loadingPage);
-      // await _controller.loadHtmlString('data:text/html;base64,$contentBase64');
-      await _redirectToPayment();
+      await controller.loadHtmlString(loadingPage);
+      await redirectToPayment();
     } catch (e) {
       result = OnPayResultCode.fail;
       log("WebView error $e");
@@ -131,25 +116,9 @@ class _OnPayWebViewFormState extends State<OnPayWebViewForm> {
     }
   }
 
-  Future<void> _redirectToPayment() async {
-    DataModelsPayResponse postData = await onpay.pay(widget.order);
-    Uri pathUrl = Uri.parse(postData.postUrl);
-    print("URL: ${postData.postUrl}");
-    Uri outgoingUri = Uri(scheme: pathUrl.scheme, host: pathUrl.host, port: pathUrl.port, path: pathUrl.path, queryParameters: postData.postData);
-    // Uri outgoingUri = Uri.parse("https://secure.onpay.ru");
-    print("URL: ${outgoingUri}");
-    // log("WebView _redirectToPayment");
-    return _controller.loadRequest(outgoingUri, method: LoadRequestMethod.post, headers: <String, String>{'Content-Type': 'text/html'});
-    // final WebViewRequest request = WebViewRequest(
-    //   uri: outgoingUri,
-    //   method: WebViewRequestMethod.post,
-    //   headers: <String, String>{'Content-Type': 'text/html'},
-    // );
-    // await _controller.loadRequest(request);
-  }
+  Future<void> redirectToPayment();
 
   Future<bool> _popWithResult([String? message]) {
-    // log("_popWithResult fired ${result.toString()}");
     Navigator.pop(context, OnPayResult(widget.order, result, message: message));
     return Future.value(false);
   }

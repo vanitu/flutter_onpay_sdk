@@ -1,3 +1,11 @@
+## 0.0.6
+
+Добавлена возможность генерации QR кода для оффлайн платежа:
+1) QRCode
+2) Система Быстрых Платежей Банка России
+
+Обновлены зависимости библиотеки
+
 ## 0.0.5
 
 Added support to provide additional params into payment link, so they will br available via API check and pay

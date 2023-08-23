@@ -7,7 +7,7 @@ class OnPayOrder {
     this.reference,
     this.payMode = "fix",
     this.ticker = "RUR",
-    this.interfaceTicker = "CRD", // CreditCards Payment gateway
+    this.interfaceTicker = "CRW", // CreditCards Payment gateway
     this.note,
     this.additionalParams = const {},
   });
@@ -28,18 +28,18 @@ class OnPayOrder {
   final String urlFailEnc = "https://onpay.ru/sdk_fail";
 
   Map<String, String?> toJson() {
-    final _data = <String, String?>{};
-    _data['user_email'] = userEmail;
-    _data['pay_for'] = payFor;
-    _data['receive_amount'] = amount.toString();
-    _data['ticker'] = ticker;
-    _data['interface_ticker'] = interfaceTicker;
-    _data['recipient'] = recipient;
-    _data['pay_mode'] = payMode;
-    _data['pay_amount'] = amount.toString();
-    _data['url_success_enc'] = urlSuccessEnc;
-    _data['url_fail_enc'] = urlFailEnc;
-    additionalParams.forEach((key, value) => _data["onpay_ap_$key"] = value);
-    return _data;
+    final data = <String, String?>{};
+    data['user_email'] = userEmail;
+    data['pay_for'] = payFor;
+    data['receive_amount'] = amount.toString();
+    data['ticker'] = ticker;
+    data['interface_ticker'] = interfaceTicker;
+    data['recipient'] = recipient;
+    data['pay_mode'] = payMode;
+    data['pay_amount'] = amount.toString();
+    data['url_success_enc'] = urlSuccessEnc;
+    data['url_fail_enc'] = urlFailEnc;
+    additionalParams.forEach((key, value) => data["onpay_ap_$key"] = value);
+    return data;
   }
 }
