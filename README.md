@@ -12,14 +12,16 @@ This package maybe used only with existed merchant account at www.onpay.ru
 
  - Оплата за товары и услуги без выхода из приложения 
  - Поддержка Visa/Mastercard payment within your application
+ - Поддержка Система Быстрых Платежей (СБП) Банка России
  - Поддерживаются все методы платежей доступные для магазина
+ - Генерации QR кода для оффлайн платежа через СБП
 
 ## Начало
 
 **Для приема карт Visa/Mastercard/МИР**
 
  - Зарегистрируйтесь на [https://onpay.ru]
- - Заполните заявку на прием платажей по картам Visa/Mastercard (платежный метод "CRD" / "UNR")
+ - Заполните заявку на прием платажей по картам Visa/Mastercard (платежный метод "CRD" / "UNR" / "CRW")
  - Запросите техподдержку OnPay активировать API платежной формы API[https://wiki.onpay.ru/doku.php?id=api-for-pay-form]
 
 ## Установка
@@ -46,7 +48,7 @@ dependencies:
 
 Пример использования SDK
 
-**По умолчанию используется метод платежа "CRD"**
+**По умолчанию используется метод платежа "CRW"**
 
 ```dart
 import 'package:flutter_onpay_sdk/flutter_onpay_sdk.dart';
@@ -57,17 +59,17 @@ import 'package:flutter_onpay_sdk/flutter_onpay_sdk.dart';
         reference: "SOMEUNIQ"; //Уникальный ключ для отслеживания
         payAmount: 100, // Цена в рублях
         payFor: 'Продукт 1', //Описание продукта в платеже
-        payMode: 'fix', // Код магазина onpay
+        payMode: 'fix', // Фиксированя цена
         recipient: 'cloud_sciencejet_net', // Код магазина onpay
         userEmail: 'some@mail.ru', // email пользователя
         note: "Короткая заметка о продукте", // ОПЦИОНАЛЬНО. Дополнительное описание покупки
-        interfaceTicker:  "CRD", // Указываем метод платежа доступный для магазина
+        interfaceTicker:  "CRW", // Указываем метод платежа доступный для магазина
         additionalParams: { // Дополнительные параметры. Будут переданы по API для запросов check и pay
           "someid": "1"
         },
         )
 
-// 2. Вызов платежной формы внутри виджета. Открывает новый экран с платежной формой. Результатом будет объект OnPayResult содержащий OnPayOrder и статус платежа
+// 2.1 Вызов платежной формы внутри виджета. Открывает новый экран с платежной формой. Результатом будет объект OnPayResult содержащий OnPayOrder и статус платежа
     OnPayResult result = await OnPaySdk.openPaymentForm(context, order); 
 
 // 3) Обработка результата платежа
@@ -82,4 +84,29 @@ import 'package:flutter_onpay_sdk/flutter_onpay_sdk.dart';
         // "Оплата не закончена"
         break;
     }
+
+// Платеж через  Система Быстрых Платежей (СБП) Банка России
 ```
+
+**Платеж через Систему Быстрых Платежей (СБП) Банка России**
+
+```dart
+import 'package:flutter_onpay_sdk/flutter_onpay_sdk.dart';
+
+
+// 1. Создаем объект платежа
+    OnPayOrder order = OnPayOrder(
+        reference: "SOMEUNIQ"; //Уникальный ключ для отслеживания
+        payAmount: 100, // Цена в рублях
+        payFor: 'Продукт 1', //Описание продукта в платеже
+        payMode: 'fix', // Фиксированя цена
+        recipient: 'onpay', // Код магазина в onpay
+        userEmail: 'some@mail.ru', // email пользователя
+        note: "Короткая заметка о продукте", // ОПЦИОНАЛЬНО. Дополнительное описание покупки
+        interfaceTicker:  "QRW", // Код для СБП Банка России
+        )
+
+// 2. Открывает новый экран с платежной формой. Результатом будет QR код для оплаты через СБП
+    OnPayResult result = await OnPaySdk.openPaymentForm(context, order, method: OnPayMethod.sbp);  
+```
+
